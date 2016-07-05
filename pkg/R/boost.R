@@ -5,6 +5,7 @@
 #' @param y dependent variable
 #' @param iter number of iterations
 #' @param beta.start initial value for the algorithm to start with
+#' @param post logical, if post Boosting algorithm should be applied (default \code{FALSE}).
 #' @return The functions returns an object of class \code{L2Boost} with the following components:
 #' \itemize{
 #' \item{BetaFinal}{the estimated final parameter vector.}
@@ -19,7 +20,7 @@
 #'   \item{y}{model response / dependent variable}
 #'   \item{X}{model matrix}
 #' }
-L2Boost <- function(X,y, iter=200, beta.start = rep(0,dim(X)[2])) {
+L2Boost <- function(X,y, iter=200, beta.start = rep(0,dim(X)[2]), post=FALSE) {
   X <- as.matrix(X)
   p <- dim(X)[2]
   n <- dim(X)[1]
@@ -44,12 +45,23 @@ L2Boost <- function(X,y, iter=200, beta.start = rep(0,dim(X)[2])) {
     S[i] <- k <- which.max(abs(BETA))
     L[i] <- which.min(SLoss)
     BetaVector[i] <- BETA[k]
-    Res_beta <- cbind(Res_beta, Res_beta[,i])
-    Res_beta[k,i+1] <- Res_beta[k,i+1] + BETA[k]
     BetaFinal[k] <- BetaFinal[k]+BETA[k]
+    if (post) {
+    ind <- BetaFinal==0
+      if (sum(ind)==p) {
+        BetaFinalp <- rep(0,p)
+        } else {
+        BetaFinalp <- rep(0,p)
+        BetaFinalpc <- coef(lm(y~ -1 + X[,!ind]))
+        BetaFinalp[!ind] <- BetaFinalpc
+        }
+      Res_beta <- cbind(Res_beta, BetaFinalp)
+    } else {
+      Res_beta <- cbind(Res_beta, Res_beta[,i])
+      Res_beta[k,i+1] <- Res_beta[k,i+1] + BETA[k]
+    }
     # updating
     f_new <- f_old + BETA[k]*X[,k]
-    ind <- BetaFinal==0
     U <- y - f_new
     f_old <- f_new
     Res <- cbind(Res, f_new)
@@ -139,44 +151,50 @@ L2BoostOGA <- function(X,y,iter=200) {
 #' 
 #' @param object object of class \code{L2Boost} or \code{L2BoostOGA}
 #' @param yref reference variable with regard to which the MSE is calculated (e.g. the observed dependent variables or some oracle)
+#' @param Xnew design matrix of the observations for which prediction accuracy shall be evaluated.
 #' @param beta.true the ture beta coefficient if known
-#' @return The function returns a list with different measures of th
-MSECal <- function(object, yref, beta.true=NULL) {
-  X <- object$X
+#' @return The function returns a list with different measures of the the predictive accuracy.
+MSECal <- function(object, yref=NULL, Xnew=NULL, beta.true=NULL) {
+  if (is.null(Xnew)) {
+    Xnew <- object$X
+  }
+  if (is.null(yref)) {
+    yref <- object$y
+  }
   y <- object$y
   iter <- object$iter
   A <- rep(0,iter)
-  A_post <- rep(0,iter)
+  #A_post <- rep(0,iter)
   MSE <- rep(0,iter)
+  #MSE_post <- rep(0,iter)
   if (class(object)=="L2Boost") {
   for (i in 1:iter) {
     beta <- object$Res_beta[,i+1]
-    f_new <-  X%*%beta
+    f_new <-  Xnew%*%beta
     MSE[i] <- mean((yref-f_new)^2)
     ind <- beta==0
-    MSE_post[i] <- mean((yref - predict(lm(y~X[,!ind])))^2) 
+    #MSE_post[i] <- mean((yref - predict(lm(yref~ -1 + Xnew[,!ind])))^2) 
     if (!is.null(beta.true)) {
-    A[i] <- mean((X%*%beta.true-f_new)^2)
-    A_post[i] <- mean((X%*%beta.true-predict(lm(y~X[,!ind])))^2)
+    A[i] <- mean((Xnew%*%beta.true-f_new)^2)
+    #A_post[i] <- mean((Xnew%*%beta.true-predict(lm(yref ~ -1 + Xnew[,!ind])))^2)
     }
   }
   }
-  
   
   if (class(object)=="L2BoostOGA") {
     for (i in 1:iter) {
       beta <- object$BetaFinalO[[i]]
-      Xproj <- X[,object$S[1:i]]
+      Xproj <- Xnew[,object$S[1:i]]
       f_new <- Xproj%*% beta   #solve(t(Xproj)%*%Xproj)%*%t(Xproj)%*%as.vector(y)
       MSE[i] <- mean((yref-f_new)^2)
       ind <- beta==0
-      MSE_post[i] <- mean((yref - predict(lm(y~X[,!ind])))^2)
+      #MSE_post[i] <- mean((yref - predict(lm(y~ -1 +Xnew[,!ind])))^2)
       if (!is.null(beta.true)) {
-      A[i] <- mean((X%*%beta.true-f_new)^2)
-      A_post[i] <- mean((X%*%beta.true-predict(lm(y~X[,!ind])))^2)
+      A[i] <- mean((Xnew%*%beta.true-f_new)^2)
+      #A_post[i] <- mean((Xnew%*%beta.true-predict(lm(y~ -1 + Xnew[,!ind])))^2)
       }
     }
   }
-  if (!is.null(beta.true)) return(list(A = A, MSE = MSE, A_post = A_post))
-  else  return(list(MSE = MSE, A_post = A_post))
+  if (!is.null(beta.true)) return(list(A = A, MSE = MSE))
+  else  return(list(MSE = MSE))
 }

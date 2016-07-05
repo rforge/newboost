@@ -42,7 +42,7 @@ L1GBoost <- function(X,y, iter,n_per,weight_p){
   f_old <- f_new <- rep(0,n)
   S <- L <- rep(NA, iter) # selected variables
   Res <- f_old # matrix for storing results
-  Res_beta <- matrix(0,nrow=p, ncol=1)
+  Res_beta <- matrix(0,nrow=p*J, ncol=1)
   sigma2 <- rep(NA,iter)
   #sigma2 is the loss here...
   # sigma20 <- mean(y^2)
@@ -103,13 +103,14 @@ L1GBoost <- function(X,y, iter,n_per,weight_p){
     }
     #update the final estimator
     BetaFinal <- BetaFinal+BetaVector
+    Res_beta <- cbind(Res_beta, BetaFinal)
     # updating---get best values from Beta_Vector
     beta_values = BetaVector[index_vector]
     update_weight = kronecker(beta_values,rep(1,n_per))
     ##you can also round up here...
     f_new <- f_old + update_weight*X[,k]
     ind <- BetaFinal==0
-    U <- y - f_new
+    U <- as.vector(y) - f_new
     f_old <- f_new
     Res <- cbind(Res, f_new)
     sigma2[i] <- evaluate_guess_w(f_new,y,weight_p)
