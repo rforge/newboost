@@ -76,7 +76,7 @@ L1GBoost <- function(X,y, iter,n_per,weight_p){
         else{
             # else{
             #Here change fitting with loss function: L1-quantile reg
-            fit=rq(current_U~-1+current_X,tau=0.5,weight=current_weight)
+            fit=quantreg::rq(current_U~-1+current_X,tau=0.5,weight=current_weight)
             # }
             v=fit$coeff[1]
             temp_beta[j]<-v

@@ -1,6 +1,6 @@
 Package: newboost
-Title: New boosting algorithms.
-Version: 0.0.0.9000
+Title: New boosting algorithms
+Version: 0.0.1
 Authors@R: c(person("Martin", "Spindler", email = "martin.spindler@gmx.de", role = c("cre")),
            person("Ye", "Luo", role = c("aut")))
 Description: New variants of the L2Boosting algorithm are implemented, mainly
@@ -8,6 +8,8 @@ Description: New variants of the L2Boosting algorithm are implemented, mainly
     implemented.
 Depends:
     R (>= 3.2.0)
+Imports:
+    quantreg
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

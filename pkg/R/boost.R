@@ -15,7 +15,7 @@
 #'  \item{S}{vector of the indices of the selected variables in each round}
 #'   \item{sigma2}{estimation of the variance} 
 #'   \item{stop_rule}{When the stopping rule, stopped the algorithm.}
-#'   \iten{iter}{maximal number of iterations of the algorithm}
+#'   \item{iter}{maximal number of iterations of the algorithm}
 #'   \item{y}{model response / dependent variable}
 #'   \item{X}{model matrix}
 #' }
@@ -80,7 +80,7 @@ L2Boost <- function(X,y, iter=200, beta.start = rep(0,dim(X)[2])) {
 #'  \item{S}{vector of the indices of the selected variables in each round}
 #'   \item{sigma2}{estimation of the variance} 
 #'   \item{stop_rule}{When the stopping rule, stopped the algorithm.}
-#'   \iten{iter}{maximal number of iterations of the algorithm}
+#'   \item{iter}{maximal number of iterations of the algorithm}
 #'   \item{y}{model response / dependent variable}
 #'   \item{X}{model matrix}
 #' }
@@ -165,12 +165,12 @@ MSECal <- function(object, yref, beta.true=NULL) {
   
   if (class(object)=="L2BoostOGA") {
     for (i in 1:iter) {
-      beta <- BetaFinalO[[i]]
+      beta <- object$BetaFinalO[[i]]
       Xproj <- X[,object$S[1:i]]
       f_new <- Xproj%*% beta   #solve(t(Xproj)%*%Xproj)%*%t(Xproj)%*%as.vector(y)
       MSE[i] <- mean((yref-f_new)^2)
       ind <- beta==0
-      MSE_post[i] <- mean((yhat - predict(lm(y~X[,!ind])))^2)
+      MSE_post[i] <- mean((yref - predict(lm(y~X[,!ind])))^2)
       if (!is.null(beta.true)) {
       A[i] <- mean((X%*%beta.true-f_new)^2)
       A_post[i] <- mean((X%*%beta.true-predict(lm(y~X[,!ind])))^2)

@@ -26,7 +26,7 @@ The functions returns an object of class \code{L2Boost} with the following compo
  \item{S}{vector of the indices of the selected variables in each round}
   \item{sigma2}{estimation of the variance} 
   \item{stop_rule}{When the stopping rule, stopped the algorithm.}
-  \iten{iter}{maximal number of iterations of the algorithm}
+  \item{iter}{maximal number of iterations of the algorithm}
   \item{y}{model response / dependent variable}
   \item{X}{model matrix}
 }
