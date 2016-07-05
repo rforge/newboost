@@ -1,0 +1,14 @@
+Package: newboost
+Title: New boosting algorithms.
+Version: 0.0.0.9000
+Authors@R: c(person("Martin", "Spindler", email = "martin.spindler@gmx.de", role = c("cre")),
+           person("Ye", "Luo", role = c("aut")))
+Description: New variants of the L2Boosting algorithm are implemented, mainly
+    orthogonal Boosting and post-Boosting. Moreover feasible stopping rules are
+    implemented.
+Depends:
+    R (>= 3.2.0)
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 5.0.1
