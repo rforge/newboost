@@ -174,7 +174,7 @@ L2BoostOGA <- function(X,y,iter=200) {
     # projection on the selected variables
     # y = X(X'X)^-1Xy
     Xproj <- X[,S[1:i]]
-    BetaFinalO[[i]] <- ginv(t(Xproj)%*%Xproj)%*%t(Xproj)%*%as.vector(y) #solve
+    BetaFinalO[[i]] <- MASS::ginv(t(Xproj)%*%Xproj)%*%t(Xproj)%*%as.vector(y) #solve
     f_new <- Xproj%*% BetaFinalO[[i]]   #solve(t(Xproj)%*%Xproj)%*%t(Xproj)%*%as.vector(y)
     ind <- BetaFinal==0
     U <- y - f_new
