@@ -5,7 +5,7 @@ Authors@R: c(person("Martin", "Spindler", email = "martin.spindler@gmx.de", role
            person("Ye", "Luo", role = c("aut")))
 Description: New variants of the L2Boosting algorithm are implemented, mainly
     orthogonal Boosting and post-Boosting. Moreover feasible stopping rules are
-    implemented.
+    implemented. 
 Depends:
     R (>= 3.2.0)
 Imports:
