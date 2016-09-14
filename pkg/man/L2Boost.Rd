@@ -4,7 +4,7 @@
 \alias{L2Boost}
 \title{Implementation of the L2Boosting algorithm}
 \usage{
-L2Boost(X, y, iter = 200, beta.start = rep(0, dim(X)[2]))
+L2Boost(X, y, iter = 200, beta.start = rep(0, dim(X)[2]), post = FALSE)
 }
 \arguments{
 \item{X}{matrix of regressors}
@@ -14,6 +14,8 @@ L2Boost(X, y, iter = 200, beta.start = rep(0, dim(X)[2]))
 \item{iter}{number of iterations}
 
 \item{beta.start}{initial value for the algorithm to start with}
+
+\item{post}{logical, if post Boosting algorithm should be applied (default \code{FALSE}).}
 }
 \value{
 The functions returns an object of class \code{L2Boost} with the following components:

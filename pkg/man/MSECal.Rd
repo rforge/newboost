@@ -4,17 +4,19 @@
 \alias{MSECal}
 \title{Function for calculation of different MSEs}
 \usage{
-MSECal(object, yref, beta.true = NULL)
+MSECal(object, yref = NULL, Xnew = NULL, beta.true = NULL)
 }
 \arguments{
 \item{object}{object of class \code{L2Boost} or \code{L2BoostOGA}}
 
 \item{yref}{reference variable with regard to which the MSE is calculated (e.g. the observed dependent variables or some oracle)}
 
+\item{Xnew}{design matrix of the observations for which prediction accuracy shall be evaluated.}
+
 \item{beta.true}{the ture beta coefficient if known}
 }
 \value{
-The function returns a list with different measures of th
+The function returns a list with different measures of the the predictive accuracy.
 }
 \description{
 This function is mainly used for analyzing the performance of the L2Boost and orthogonal L2Boost algorithms.

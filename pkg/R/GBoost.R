@@ -24,6 +24,8 @@ evaluate_guess_w<-function(guess,gap_temp,weight){
 #' @param n_per number of observations per unit (size of gropups)
 #' @param weight_p weight function
 #' @return A list with different components comparable to \code{L2Boost} is returned.
+#' @export
+#' @rdname groupboost
 L1GBoost <- function(X,y, iter,n_per,weight_p){
   p <- dim(X)[2]
   n <- dim(X)[1]
@@ -49,7 +51,7 @@ L1GBoost <- function(X,y, iter,n_per,weight_p){
   for (i in 1:iter) {
     #best beta initial is 1
     BETA <- rep(0,(p*J))
-    temp_beta<-rep(NA,p)
+    temp_beta <- rep(NA,p)
     SLoss <- rep(0,p)
     temp_loss <- rep(NA,p)
     #DO BOOSTING--GREEDY ALGORITHM TO FIND BEST FEATURE
