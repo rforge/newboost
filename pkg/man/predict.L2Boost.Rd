@@ -4,7 +4,8 @@
 \alias{predict.L2Boost}
 \title{Predict fot L2Boost objects}
 \usage{
-\method{predict}{L2Boost}(object, newx = NULL, mstop = object$stop_rule)
+\method{predict}{L2Boost}(object, newx = NULL, mstop = object$stop_rule,
+  ...)
 }
 \arguments{
 \item{object}{Object of class \code{L2Boost}}
@@ -12,6 +13,8 @@
 \item{newx}{Matrix of x-variables to be predicted}
 
 \item{mstop}{Stopping number, i.e. for which iteration of the algorithm the prediction is to be conducted}
+
+\item{...}{further arguments}
 }
 \value{
 A vector with the predicted values.

@@ -19,6 +19,8 @@ L2Boost.multistart(X, y, num.start = 5, iter = 200)
 \item{beta.start}{initial value for the algorithm to start with}
 
 \item{post}{logical, if post Boosting algorithm should be applied (default \code{FALSE}).}
+
+\item{num.start}{number of starts}
 }
 \value{
 The functions returns an object of class \code{L2Boost} with the following components:

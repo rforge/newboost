@@ -81,6 +81,7 @@ L2Boost <- function(X,y, iter=200, beta.start = rep(0,dim(X)[2]), post=FALSE) {
 #' The L2Boost algorithm is started at different values and then the intersection of all selected variables from each run 
 #' is included in the final model.
 #' 
+#' @param num.start number of starts
 #' @export
 #' @rdname L2Boost
 L2Boost.multistart <- function(X,y, num.start=5, iter=200) {
@@ -250,9 +251,10 @@ MSECal <- function(object, yref=NULL, Xnew=NULL, beta.true=NULL) {
 #' @param object Object of class \code{L2Boost}
 #' @param newx Matrix of x-variables to be predicted
 #' @param mstop Stopping number, i.e. for which iteration of the algorithm the prediction is to be conducted
+#' @param ... further arguments
 #' @return A vector with the predicted values.
 #' @export
-predict.L2Boost <- function(object, newx=NULL, mstop=object$stop_rule) {
+predict.L2Boost <- function(object, newx=NULL, mstop=object$stop_rule, ...) {
   if (is.null(newx)) newx <- object$X
   beta <- object$Res_beta[,mstop+1]
   yhat <- newx%*%beta
@@ -265,9 +267,10 @@ predict.L2Boost <- function(object, newx=NULL, mstop=object$stop_rule) {
 #' @param object Object of class \code{L2BoostOGA}
 #' @param newx Matrix of x-variables to be predicted
 #' @param mstop Stopping number, i.e. for which iteration of the algorithm the prediction is to be conducted
+#' @param ... further arguments
 #' @return A vector with the predicted values.
 #' @export
-predict.L2BoostOGA <- function(object, newx=NULL, mstop=object$stop_rule) {
+predict.L2BoostOGA <- function(object, newx=NULL, mstop=object$stop_rule, ...) {
   if (is.null(newx)) newx <- object$X
   beta <- object$BetaFinalO[[mstop]]
   Xproj <- newx[,object$S[1:mstop]]
