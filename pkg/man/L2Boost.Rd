@@ -2,9 +2,12 @@
 % Please edit documentation in R/boost.R
 \name{L2Boost}
 \alias{L2Boost}
+\alias{L2Boost.multistart}
 \title{Implementation of the L2Boosting algorithm}
 \usage{
 L2Boost(X, y, iter = 200, beta.start = rep(0, dim(X)[2]), post = FALSE)
+
+L2Boost.multistart(X, y, num.start = 5, iter = 200)
 }
 \arguments{
 \item{X}{matrix of regressors}
@@ -35,5 +38,8 @@ The functions returns an object of class \code{L2Boost} with the following compo
 }
 \description{
 This function implements a classical version of the L2Boosting algorithm.
+
+The L2Boost algorithm is started at different values and then the intersection of all selected variables from each run 
+is included in the final model.
 }
 
