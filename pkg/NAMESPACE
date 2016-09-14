@@ -2,7 +2,7 @@
 
 S3method(predict,L2Boost)
 S3method(predict,L2BoostOGA)
-export(L1GBoost)
+#export(L1GBoost)
 export(L2Boost)
 export(L2Boost.multistart)
 export(L2BoostOGA)
